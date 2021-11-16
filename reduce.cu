@@ -58,7 +58,7 @@ float * fillArray(int n, int upbound)
 
    /* generate n random numbers from 0 to unbound - 1 */
    for( i = 0 ; i < n ; i++ ) {
-      ret[i] = (rand() % upbound * 1.0f) / 1000;
+      ret[i] = rand() % upbound * 1.0f;
    }
    return ret;
 }
@@ -73,13 +73,13 @@ void printArray(float *arr, int n){
    printf("\n");
 }
 
-float cpuReduce(float *h_in, int n)
+double cpuReduce(float *h_in, int n)
 {
-    float s = 0;
+    double s = 0;
     int i;
     for(i = 0; i < n; i ++)
     {
-        s += h_in[i];
+        s += (double) h_in[i];
     }
     return s;
 }
@@ -124,7 +124,7 @@ __global__ void reduce3(float *in, float *out, int n)
 	
 	__syncthreads();
 	
-	for(unsigned int s = blockDim.x/2; s > 0; s>>=1)
+	for(unsigned int s = blockDim.x / 2; s > 0; s>>=1)
 	{
 		if(tid < s)
 		{
